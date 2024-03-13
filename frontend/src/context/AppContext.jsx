@@ -51,7 +51,7 @@ export default function AppContextProvider({ children }) {
 
     setWorking(true);
 
-    axios("http://localhost:8000/chat", {
+    axios(`${import.meta.env.VITE_BASE_URL}/chat`, {
       method: "POST",
       data: {
         input,

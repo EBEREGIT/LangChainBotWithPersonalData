@@ -10,13 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/dom-speech-recognition": "^0.0.4",
     "axios": "^1.6.7",
     "cheerio": "^1.0.0-rc.12",
     "langchain": "^0.1.26",
     "pdf-parse": "^1.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@types/dom-speech-recognition": "^0.0.4"
+    "react-speech-kit": "^3.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.64",
