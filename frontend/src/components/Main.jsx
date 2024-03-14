@@ -1,9 +1,11 @@
 import { useContext, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
+import { Variable } from "../context/Variable";
 // import { Variable } from "../context/Variable";
 
 export default function Main() {
   const { textToSpeech, startListening, speechToText } = useContext(AppContext);
+  const { message, feedback } = useContext(Variable);
 
   // const { isWelcomed, setIsWelcomed } = useContext(Variable);
 
@@ -19,9 +21,13 @@ export default function Main() {
 
   return (
     <div>
+      <p>{message}</p>
+
       <button onClick={() => startListening()}>
         UNIVERSITY OF NGERIA, NSUKKA TIMETABLE OF EVENTS FOR 2022/2023 SESSION
       </button>
+
+      <p>{feedback}</p>
     </div>
   );
 }
