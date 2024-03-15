@@ -15,7 +15,8 @@ if ("webkitSpeechRecognition" in window) {
 export const AppContext = createContext();
 
 export default function AppContextProvider({ children }) {
-  const { setMessage, setWorking, setFeedback } = useContext(Variable);
+  const { setMessage, setWorking, setFeedback, setIsListening } =
+    useContext(Variable);
 
   const textToSpeech = (text) => {
     const voices = speechSynthesis.getVoices();
@@ -29,6 +30,7 @@ export default function AppContextProvider({ children }) {
 
     recognition.onresult = (e) => {
       setMessage(e.results[0][0].transcript);
+      setIsListening(false);
       customChat(e.results[0][0].transcript);
 
       recognition.stop();
@@ -37,6 +39,7 @@ export default function AppContextProvider({ children }) {
 
   const startListening = () => {
     setMessage("");
+    setIsListening(true);
     recognition.start();
   };
 
