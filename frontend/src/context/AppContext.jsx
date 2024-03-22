@@ -29,6 +29,7 @@ export default function AppContextProvider({ children }) {
     if (!recognition) return;
 
     recognition.onresult = (e) => {
+      console.log(e.results[0][0].transcript);
       setMessage(e.results[0][0].transcript);
       setIsListening(false);
       customChat(e.results[0][0].transcript);
