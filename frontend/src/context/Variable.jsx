@@ -9,7 +9,6 @@ export default function VariableProvider({ children }) {
   const [isListening, setIsListening] = useState(false);
   const [working, setWorking] = useState(false);
   const [feedback, setFeedback] = useState("");
-  const [type, setType] = useState("");
 
   return (
     <Variable.Provider
@@ -24,8 +23,6 @@ export default function VariableProvider({ children }) {
         setWorking,
         feedback,
         setFeedback,
-        type,
-        setType,
       }}
     >
       {children}
