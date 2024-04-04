@@ -15,7 +15,7 @@ if ("webkitSpeechRecognition" in window) {
 export const AppContext = createContext();
 
 export default function AppContextProvider({ children }) {
-  const { setMessage, setWorking, setFeedback, setIsListening } =
+  const { setMessage, setWorking, setFeedback, setIsListening, } =
     useContext(Variable);
 
   const textToSpeech = (text) => {
@@ -25,23 +25,30 @@ export default function AppContextProvider({ children }) {
     speechSynthesis.speak(utter);
   };
 
-  const speechToText = () => {
+  const speechToText = (brand) => {
     if (!recognition) return;
 
     recognition.onresult = (e) => {
-      console.log(e.results[0][0].transcript);
       setMessage(e.results[0][0].transcript);
       setIsListening(false);
-      customChat(e.results[0][0].transcript);
+
+      if (brand === "INFORMATION") {
+        getUNNInfo(e.results[0][0].transcript);
+      }
+
+      if (brand === "NAVIGATION") {
+        getUNNNavigation(e.results[0][0].transcript);
+      }
 
       recognition.stop();
     };
   };
 
-  const startListening = () => {
+  const startListening = (brand) => {
     setMessage("");
     setIsListening(true);
     recognition.start();
+    speechToText(brand);
   };
 
   const checkBrowserSupport = () => {
@@ -50,22 +57,51 @@ export default function AppContextProvider({ children }) {
     }
   };
 
-  const customChat = (input) => {
+  const getUNNInfo = (input) => {
     if (!input) return;
     textToSpeech("Give me a moment, please!");
 
     setWorking(true);
 
-    axios(`${import.meta.env.VITE_BASE_URL}/chat`, {
+    axios(`${import.meta.env.VITE_BASE_URL}/information`, {
       method: "POST",
       data: {
         input,
       },
     })
       .then((response) => {
-        console.log(response);
-
         if (response.data.message) {
+          setFeedback(response.data.message);
+          textToSpeech(response.data.message);
+        } else {
+          const feedback = "I encountered an error. Let's try again later!";
+          setFeedback(feedback);
+          textToSpeech(feedback);
+        }
+
+        setWorking(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setWorking(false);
+      });
+  };
+
+  const getUNNNavigation = (input) => {
+    if (!input) return;
+    textToSpeech("Give me a moment, please!");
+
+    setWorking(true);
+
+    axios(`${import.meta.env.VITE_BASE_URL}/navigation`, {
+      method: "POST",
+      data: {
+        input,
+      },
+    })
+      .then((response) => {
+        if (response.data.message) {
+          console.log(response.data.message);
           setFeedback(response.data.message);
           textToSpeech(response.data.message);
         } else {
@@ -89,7 +125,8 @@ export default function AppContextProvider({ children }) {
         speechToText,
         startListening,
         checkBrowserSupport,
-        customChat,
+        getUNNInfo,
+        getUNNNavigation,
       }}
     >
       {children}

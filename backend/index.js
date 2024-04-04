@@ -10,6 +10,8 @@ import { createRetrievalChain } from "langchain/chains/retrieval";
 import { ChatOpenAI } from "@langchain/openai";
 import { config } from "dotenv";
 import { WebPDFLoader } from "langchain/document_loaders/web/pdf";
+import { PromptTemplate } from "@langchain/core/prompts";
+import { LLMChain } from "langchain/chains";
 config();
 
 const chatModel = new ChatOpenAI({
@@ -27,7 +29,7 @@ app.get("/", async (request, response) => {
   response.json({ message: "Welcome To Tahir Project!" });
 });
 
-app.post("/chat", async (request, response) => {
+app.post("/information", async (request, response) => {
   const { input } = request.body;
 
   try {
@@ -64,6 +66,27 @@ app.post("/chat", async (request, response) => {
     });
 
     response.json({ message: result.answer });
+  } catch (error) {
+    return response.json({ error });
+  }
+});
+
+app.post("/navigation", async (request, response) => {
+  const { input } = request.body;
+
+  try {
+    const template =
+      "You are a helpful assistant. You help with navigation. Be detailed when answering questions. \n Question: {question}";
+    const prompt = new PromptTemplate({
+      template,
+      inputVariables: ["question"],
+    });
+
+    const chain = new LLMChain({ llm: chatModel, prompt });
+
+    const result = await chain.call({ question: input });
+
+    response.json({ message: result.text });
   } catch (error) {
     return response.json({ error });
   }

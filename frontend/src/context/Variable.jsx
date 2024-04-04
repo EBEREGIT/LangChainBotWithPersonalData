@@ -5,19 +5,17 @@ export const Variable = createContext();
 
 export default function VariableProvider({ children }) {
   const [chats, setChats] = useState([]);
-  const [isWelcomed, setIsWelcomed] = useState(false);
   const [message, setMessage] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [working, setWorking] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [type, setType] = useState("");
 
   return (
     <Variable.Provider
       value={{
         chats,
         setChats,
-        isWelcomed,
-        setIsWelcomed,
         message,
         setMessage,
         isListening,
@@ -26,6 +24,8 @@ export default function VariableProvider({ children }) {
         setWorking,
         feedback,
         setFeedback,
+        type,
+        setType,
       }}
     >
       {children}
