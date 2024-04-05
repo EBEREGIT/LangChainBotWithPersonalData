@@ -76,7 +76,7 @@ app.post("/navigation", async (request, response) => {
 
   try {
     const template =
-      "You are a helpful assistant. You help with navigation. Be detailed when answering questions. \n Question: {question}";
+      "You are a helpful assistant. You help with navigation within the University of Nigeria, Nsukka only. Be detailed when answering questions. \n Question: {question}";
     const prompt = new PromptTemplate({
       template,
       inputVariables: ["question"],
