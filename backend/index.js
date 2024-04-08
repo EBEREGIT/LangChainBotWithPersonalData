@@ -9,9 +9,10 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { createRetrievalChain } from "langchain/chains/retrieval";
 import { ChatOpenAI } from "@langchain/openai";
 import { config } from "dotenv";
-import { WebPDFLoader } from "langchain/document_loaders/web/pdf";
+// import { WebPDFLoader } from "langchain/document_loaders/web/pdf";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { LLMChain } from "langchain/chains";
+import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 config();
 
 const chatModel = new ChatOpenAI({
@@ -33,11 +34,12 @@ app.post("/information", async (request, response) => {
   const { input } = request.body;
 
   try {
-    const output = await fetch(
-      "https://www.unn.edu.ng/wp-content/uploads/2023/08/TIMETABLE-OF-EVENTS-FOR-2022-2023-SESSION.pdf"
-    );
-    const data = await output.blob();
-    const loader = new WebPDFLoader(data);
+    // const output = await fetch(
+    //   "https://www.unn.edu.ng/wp-content/uploads/2023/08/TIMETABLE-OF-EVENTS-FOR-2022-2023-SESSION.pdf"
+    // );
+    // const data = await output.blob();
+    // const loader = new WebPDFLoader(data);
+    const loader = new PDFLoader("../unn.pdf");
     const docs = await loader.load();
     const splitDocs = await splitter.splitDocuments(docs);
     const vectorStore = await MemoryVectorStore.fromDocuments(
