@@ -1,4 +1,4 @@
-This is a AI chatbot with voice recognition. It was created with React, Nodejs, Langchain OpenAi, and ChatGPT.
+This is an AI-powered chatbot with voice recognition. It was created with React, Nodejs, Langchain OpenAi, and ChatGPT.
 
 ## Dependencies
 ### Backend
